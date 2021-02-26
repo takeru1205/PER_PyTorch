@@ -25,6 +25,8 @@ class Agent:
         self.target_net.eval()
         self.criterion = F.smooth_l1_loss
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.net.to(self.device)
+        self.target_net.to(self.device)
         self.writer = writer
 
     def choose_action(self, state, timestep):
@@ -45,6 +47,11 @@ class Agent:
             return
 
         states, actions, rewards, states_, terminals = self.memory.sample_buffer(self.batch_size)
+        states = states.to(self.device)
+        actions = actions.to(self.device)
+        rewards = rewards.to(self.device)
+        states_ = states_.to(self.device)
+        terminals = terminals.to(self.device)
         state_actinon_values = self.net.forward(states.to(torch.float))
         state_actinon_values = state_actinon_values.gather(1, actions[:, 0].unsqueeze(1).to(torch.long)).squeeze(1)
 

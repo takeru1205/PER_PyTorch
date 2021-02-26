@@ -20,8 +20,8 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
         self.fc3 = nn.Linear(self.fc2_dims, self.n_actions)
 
-        self.optimizer = optim.RMSprop(self.parameters(), lr=lr)
-        # self.optimizer = optim.Adam(self.parameters(), lr=0.0001)
+        # self.optimizer = optim.RMSprop(self.parameters(), lr=lr)
+        self.optimizer = optim.Adam(self.parameters(), lr=0.0023)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         self.to(self.device)
